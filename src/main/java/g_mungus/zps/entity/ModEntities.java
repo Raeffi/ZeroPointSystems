@@ -13,6 +13,6 @@ public class ModEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<OctoMountingEntity>> OCTO_MOUNTING = ENTITIES.register("octo_mounting_seat",
         () -> EntityType.Builder.<OctoMountingEntity>of(OctoMountingEntity::new, MobCategory.MISC)
-            .sized(0.6f, 0.6f)
+            .sized(0.5f, 0.5f)
             .build("octo_mounting_seat"));
 } 
