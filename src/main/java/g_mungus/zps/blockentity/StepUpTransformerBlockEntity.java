@@ -130,9 +130,13 @@ public class StepUpTransformerBlockEntity extends NetworkTerminal {
                     if (targetEntity != null) {
                         IEnergyStorage storage = level.getCapability(Capabilities.EnergyStorage.BLOCK, targetPos, dir.getOpposite());
                         if (storage != null && storage.canReceive()) {
-                            int energySent = storage.receiveEnergy(energyPerTransformer, false);
-                            if (energySent > 0) {
-                                blockEntity.energyHandler.extractEnergy(energySent, false);
+                            int canExtract = blockEntity.energyHandler.extractEnergy(energyPerTransformer, true);
+                            int canReceive = storage.receiveEnergy(canExtract, true);
+
+                            int toSend = Math.min(canExtract, canReceive);
+                            if (toSend > 0) {
+                                int extracted = blockEntity.energyHandler.extractEnergy(toSend, false);
+                                storage.receiveEnergy(extracted, false);
                             }
                         }
                     }
