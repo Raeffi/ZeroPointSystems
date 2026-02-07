@@ -136,6 +136,12 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .noOcclusion()));
 
+    public static final RegistryObject<Block> SERIAL_BUS = BLOCKS.register("serial_bus",
+            () -> new SerialBusBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .strength(2.0f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
+
 /// DECOR BLOCKS
 
     public static final RegistryObject<Block> SPACE_TRUSS = BLOCKS.register("space_truss",
