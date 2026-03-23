@@ -108,14 +108,34 @@ public class RibbonCableBlock extends CableComponentBlock {
 
     @Override
     public int getChannelCountForConnection(BlockPos self, BlockPos from, Level level) {
-        //TODO
-        return 0;
+        BlockState fromState = level.getBlockState(from);
+        if (!(fromState.getBlock() instanceof RibbonCableBlock)) return 1;
+
+        Direction connecting = Direction.fromDelta(
+                from.getX() - self.getX(),
+                from.getY() - self.getY(),
+                from.getZ() - self.getZ()
+        );
+        if (connecting == null) return 1;
+        Direction.Axis axis = connecting.getAxis();
+
+        RibbonCableOrientation selfOrientation = level.getBlockState(self).getValue(ORIENTATION);
+        RibbonCableOrientation fromOrientation = fromState.getValue(ORIENTATION);
+
+        return selfOrientation.getTwistState(axis).match(fromOrientation.getTwistState(axis)) ? 1 : 0;
     }
 
     @Override
     public List<BlockPos> getConnectingNeighbors(NetworkNode self, Level level) {
-        //TODO
-        return List.of();
+        BlockPos origin = self.pos();
+        return new ArrayList<>(List.of(
+                origin.above(),
+                origin.below(),
+                origin.north(),
+                origin.east(),
+                origin.south(),
+                origin.west()
+        ));
     }
 
 }
