@@ -1,11 +1,11 @@
 {
   "multipart": [
     { "when": { "orientation": "north_south" },     "apply": { "model": "zps:block/ribbon_straight" } },
-    { "when": { "orientation": "north_south_alt" }, "apply": { "model": "zps:block/ribbon_straight", "x": 180 } },
+    { "when": { "orientation": "north_south_alt" }, "apply": { "model": "zps:block/ribbon_straight_alt" } },
     { "when": { "orientation": "east_west" },       "apply": { "model": "zps:block/ribbon_straight", "y": 90 } },
-    { "when": { "orientation": "east_west_alt" },   "apply": { "model": "zps:block/ribbon_straight", "x": 180, "y": 90 } },
+    { "when": { "orientation": "east_west_alt" },   "apply": { "model": "zps:block/ribbon_straight_alt", "y": 90 } },
     { "when": { "orientation": "up_down" },         "apply": { "model": "zps:block/ribbon_straight", "x": 90 } },
-    { "when": { "orientation": "up_down_alt" },     "apply": { "model": "zps:block/ribbon_straight", "x": 90, "y": 90 } },
+    { "when": { "orientation": "up_down_alt" },     "apply": { "model": "zps:block/ribbon_straight_alt", "x": 90 } },
 
     { "when": { "orientation": "west_north" },      "apply": { "model": "zps:block/ribbon_bend" } },
     { "when": { "orientation": "north_east" },      "apply": { "model": "zps:block/ribbon_bend", "y": 90 } },
