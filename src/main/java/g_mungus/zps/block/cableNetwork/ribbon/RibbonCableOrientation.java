@@ -52,25 +52,15 @@ public enum RibbonCableOrientation implements StringRepresentable {
         direction_a = directionA;
         direction_b = directionB;
 
-        if (directionA.getNormal().getY() != 0 && directionB.getNormal().getY() == 0) {
-            boolean out = alt;
-            if (directionB.getAxis() == Axis.Z) {
-                out = !out;
-            }
-            twisted_a = out;
-        } else {
-            twisted_a = alt;
-        }
+        twisted_a = computeTwist(directionA, directionB, alt);
+        twisted_b = computeTwist(directionB, directionA, alt);
+    }
 
-        if (directionB.getNormal().getY() != 0 && directionA.getNormal().getY() == 0) {
-            boolean out = alt;
-            if (directionA.getAxis() == Axis.Z) {
-                out = !out;
-            }
-            twisted_b = out;
-        } else {
-            twisted_b = alt;
+    private static boolean computeTwist(Direction self, Direction other, boolean alt) {
+        if ((self.getNormal().getY() != 0 && other.getNormal().getY() == 0) || (self.getNormal().getY() == 0 && other.getNormal().getY() != 0)) {
+            return alt ^ (other.getAxis() == Axis.Z);
         }
+        return alt;
     }
 
     @Override
