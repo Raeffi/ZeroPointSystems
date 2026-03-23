@@ -69,57 +69,32 @@ public class RibbonCableBlock extends CableComponentBlock {
 
     private BlockState getNewBlockState(BlockState state, Level level, BlockPos pos) {
         RibbonCableOrientation current = state.getValue(ORIENTATION);
-        RibbonCableOrientation newOrientation = current;
 
-        List<Direction> selected = new ArrayList<>();
-
+        // Collect connectable neighbors
         List<Direction> available = new ArrayList<>();
         for (Direction dir : Direction.values()) {
-            if (canConnect(pos, pos.relative(dir), level)) {
-                available.add(dir);
-            }
+            if (canConnect(pos, pos.relative(dir), level)) available.add(dir);
         }
 
-        // Keep existing connections if still valid
-        if (available.contains(current.direction_a)) {
-            selected.add(current.direction_a);
-        }
-        if (available.contains(current.direction_b)) {
-            selected.add(current.direction_b);
-        }
-
-        List<Direction> preservedDirections = new ArrayList<>(selected);
-
-        // Add new connections if there is space
+        // Keep existing connections if still valid, then fill from available
+        List<Direction> selected = new ArrayList<>();
+        if (available.contains(current.direction_a)) selected.add(current.direction_a);
+        if (available.contains(current.direction_b)) selected.add(current.direction_b);
         for (Direction dir : available) {
-            if (!selected.contains(dir) && selected.size() < 2) {
-                selected.add(dir);
-            }
+            if (!selected.contains(dir) && selected.size() < 2) selected.add(dir);
         }
 
-        // Needs new orientation if we have a connection in a new direction
-        boolean needNewOrientation = selected.stream().anyMatch(it ->
-                it != current.direction_a && it != current.direction_b
-        );
-
-        // Find new orientation, preserving existing twisted-ness
-        if (needNewOrientation) {
-            Map<Direction.Axis, RibbonCableOrientation.TwistState> twistRequirements = new HashMap<>();
-
-            for (var axis: Direction.Axis.values()) {
-                twistRequirements.put(axis, RibbonCableOrientation.TwistState.EITHER);
-            }
-            for (var dir : preservedDirections) {
-                Direction.Axis axis = dir.getAxis();
-                twistRequirements.put(axis, current.getTwistState(axis));
-            }
-
-            for (var orientation : RibbonCableOrientation.values()) {
-                if (new HashSet<>(List.of(orientation.direction_a, orientation.direction_b)).containsAll(selected)
-                        && twistRequirements.entrySet().stream().allMatch(entry ->
-                            entry.getValue().match(orientation.getTwistState(entry.getKey())))
-                ) {
-                    newOrientation = orientation;
+        // Find new orientation if connections changed, preserving twist for kept directions
+        RibbonCableOrientation newOrientation = current;
+        boolean needsNewOrientation = selected.stream().anyMatch(d -> d != current.direction_a && d != current.direction_b);
+        if (needsNewOrientation) {
+            List<Direction> preserved = selected.stream()
+                    .filter(d -> d == current.direction_a || d == current.direction_b)
+                    .toList();
+            for (RibbonCableOrientation o : RibbonCableOrientation.values()) {
+                if (selected.stream().allMatch(d -> d == o.direction_a || d == o.direction_b)
+                        && preserved.stream().allMatch(d -> current.getTwistState(d.getAxis()).match(o.getTwistState(d.getAxis())))) {
+                    newOrientation = o;
                     break;
                 }
             }
