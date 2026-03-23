@@ -3,6 +3,7 @@ package g_mungus.zps.block;
 import g_mungus.zps.ZPSMod;
 import g_mungus.zps.block.cableNetwork.*;
 import g_mungus.zps.block.cableNetwork.light_pipe.*;
+import g_mungus.zps.block.cableNetwork.ribbon.*;
 import g_mungus.zps.block.datagen.BlockDataGenerator;
 import g_mungus.zps.item.ModItems;
 import g_mungus.zps.mixin.BlockBehaviourAccessor;
@@ -98,6 +99,12 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> LIGHT_PIPE = BLOCKS.register("light_pipe_cable",
             () -> new LightPipeCableBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .strength(2.0f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
+
+    public static final RegistryObject<Block> RIBBON_CABLE = BLOCKS.register("ribbon_cable",
+            () -> new RibbonCableBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .strength(2.0f)
                     .requiresCorrectToolForDrops()
                     .noOcclusion()));

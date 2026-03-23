@@ -52,6 +52,9 @@ public class ModItems {
     public static final RegistryObject<Item> LIGHT_PIPE = ITEMS.register("light_pipe_cable",
             () -> new BlockItem(ModBlocks.LIGHT_PIPE.get(), new Item.Properties()));
 
+    public static final RegistryObject<Item> RIBBON_CABLE = ITEMS.register("ribbon_cable",
+            () -> new BlockItem(ModBlocks.RIBBON_CABLE.get(), new Item.Properties()));
+
     public static final RegistryObject<Item> SERIAL_BUS = ITEMS.register("serial_bus",
             () -> new BlockItem(ModBlocks.SERIAL_BUS.get(), new Item.Properties()));
 
